@@ -5,6 +5,6 @@ import com.whut.rpc.common.entity.User;
 public interface UserService {
 
 
-    public User name(User user);
+    User name(User user);
 
 }

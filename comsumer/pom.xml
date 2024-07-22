@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.whut.rpc</groupId>
-    <artifactId>provider</artifactId>
+    <artifactId>comsumer</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @author whut2024
  * @since 2024-07-23
@@ -16,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RpcRequest {
+public class RpcRequest implements Serializable {
 
     private String serviceName;
 
@@ -28,4 +30,7 @@ public class RpcRequest {
 
 
     private Object[] args;
+
+
+    private final static long serialVersionUID = 1L;
 }

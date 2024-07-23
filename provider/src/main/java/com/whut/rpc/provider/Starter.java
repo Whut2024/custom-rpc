@@ -2,7 +2,7 @@ package com.whut.rpc.provider;
 
 import com.whut.rpc.common.servcie.UserService;
 import com.whut.rpc.esay.server.impl.VertxHttpServer;
-import com.whut.rpc.esay.server.registry.LocalRegistry;
+import com.whut.rpc.esay.registry.LocalRegistry;
 import com.whut.rpc.provider.service.impl.UserServiceImpl;
 
 /**

@@ -1,4 +1,4 @@
-package com.whut.rpc.esay.server.impl;
+package com.whut.rpc.esay.server.impl.vertx;
 
 import com.whut.rpc.esay.server.BasicHttpServer;
 import io.vertx.core.Vertx;
@@ -14,13 +14,7 @@ public class VertxHttpServer implements BasicHttpServer {
         HttpServer server = Vertx.vertx().createHttpServer();
 
         // add request handler
-        server.requestHandler(event -> {
-            System.out.printf("request method is: %s, URI is: %s\n", event.method().toString(), event.uri());
-
-            event.response()
-                    .putHeader("content-type", "application/json")
-                    .end("----------starter vertx web server success----------");
-        });
+        server.requestHandler(new RequestHandler());
 
         // bind a port
         server.listen(port, result -> {

@@ -1,6 +1,7 @@
 package com.whut.rpc.provider;
 
 import com.whut.rpc.common.servcie.UserService;
+import com.whut.rpc.core.config.RpcApplication;
 import com.whut.rpc.core.server.impl.vertx.VertxHttpServer;
 import com.whut.rpc.core.registry.LocalRegistry;
 import com.whut.rpc.provider.service.impl.UserServiceImpl;
@@ -18,6 +19,6 @@ public class Starter {
         // start web server
         VertxHttpServer server = new VertxHttpServer();
 
-        server.start(8080);
+        server.start(RpcApplication.getConfig().getPort());
     }
 }

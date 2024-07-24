@@ -1,4 +1,4 @@
-package com.whut.rpc.esay.model;
+package com.whut.rpc.core.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

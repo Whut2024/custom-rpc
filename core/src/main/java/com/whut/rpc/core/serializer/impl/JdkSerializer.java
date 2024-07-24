@@ -1,12 +1,14 @@
-package com.whut.rpc.esay.serializer.impl;
+package com.whut.rpc.core.serializer.impl;
 
-import com.whut.rpc.esay.serializer.BasicSerializer;
+import com.whut.rpc.core.serializer.BasicSerializer;
 
 import java.io.*;
 
 /**
  * @author whut2024
  * @since 2024-07-23
+ *
+ * a serializer based on JDK API
  */
 public class JdkSerializer implements BasicSerializer {
     @Override

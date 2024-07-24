@@ -1,4 +1,4 @@
-package com.whut.rpc.esay.registry;
+package com.whut.rpc.core.registry;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

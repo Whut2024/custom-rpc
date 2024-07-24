@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.whut.rpc</groupId>
-    <artifactId>easy</artifactId>
+    <artifactId>core</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -36,6 +36,21 @@
             <artifactId>lombok</artifactId>
             <version>1.18.30</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!--junit-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--log back-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.14</version>
         </dependency>
     </dependencies>
 

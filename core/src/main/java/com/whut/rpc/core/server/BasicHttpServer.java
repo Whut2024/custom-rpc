@@ -1,4 +1,4 @@
-package com.whut.rpc.esay.server;
+package com.whut.rpc.core.server;
 
 /**
  * define an interface, developer can implement it to start a web sever

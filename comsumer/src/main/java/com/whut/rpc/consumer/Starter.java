@@ -2,7 +2,7 @@ package com.whut.rpc.consumer;
 
 import com.whut.rpc.common.entity.User;
 import com.whut.rpc.common.servcie.UserService;
-import com.whut.rpc.esay.proxy.ServiceProxyFactory;
+import com.whut.rpc.core.proxy.ServiceProxyFactory;
 
 /**
  * consumer service starter class

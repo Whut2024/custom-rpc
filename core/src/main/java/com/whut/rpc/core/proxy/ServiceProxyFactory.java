@@ -1,4 +1,4 @@
-package com.whut.rpc.esay.proxy;
+package com.whut.rpc.core.proxy;
 
 import java.lang.reflect.Proxy;
 

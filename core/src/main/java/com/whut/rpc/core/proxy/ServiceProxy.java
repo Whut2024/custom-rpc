@@ -1,11 +1,11 @@
-package com.whut.rpc.esay.proxy;
+package com.whut.rpc.core.proxy;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
-import com.whut.rpc.esay.model.RpcRequest;
-import com.whut.rpc.esay.model.RpcResponse;
-import com.whut.rpc.esay.serializer.BasicSerializer;
-import com.whut.rpc.esay.serializer.impl.JdkSerializer;
+import com.whut.rpc.core.model.RpcRequest;
+import com.whut.rpc.core.model.RpcResponse;
+import com.whut.rpc.core.serializer.BasicSerializer;
+import com.whut.rpc.core.serializer.impl.JdkSerializer;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;

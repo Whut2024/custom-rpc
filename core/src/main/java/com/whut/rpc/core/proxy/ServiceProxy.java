@@ -12,15 +12,15 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 /**
+ * the process logic of service proxy
  * @author whut2024
  * @since 2024-07-23
- *
- *
- * the process logic of service proxy
  */
 public class ServiceProxy implements InvocationHandler {
 
-
+    /**
+     * default serializer
+     */
     private final static BasicSerializer serializer = new JdkSerializer();
 
 

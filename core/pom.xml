@@ -52,6 +52,20 @@
             <artifactId>logback-classic</artifactId>
             <version>1.4.14</version>
         </dependency>
+
+        <!--serializer  kryo-->
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>kryo</artifactId>
+            <version>5.6.0</version>
+        </dependency>
+
+        <!--serializer hessian-->
+        <dependency>
+            <groupId>com.caucho</groupId>
+            <artifactId>hessian</artifactId>
+            <version>4.0.66</version>
+        </dependency>
     </dependencies>
 
 </project>

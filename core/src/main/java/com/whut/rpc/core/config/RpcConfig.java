@@ -2,6 +2,8 @@ package com.whut.rpc.core.config;
 
 import lombok.Data;
 
+import static com.whut.rpc.core.serializer.SerializerKeys.*;
+
 /**
  * the config of rpc framework
  *
@@ -26,4 +28,7 @@ public class RpcConfig {
 
 
     private Boolean mock = false;
+
+
+    private String serializer = JDK;
 }

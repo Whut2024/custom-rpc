@@ -2,10 +2,12 @@ package com.whut.rpc.core.proxy;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import com.whut.rpc.core.config.RpcApplication;
+import com.whut.rpc.core.config.RpcConfig;
 import com.whut.rpc.core.model.RpcRequest;
 import com.whut.rpc.core.model.RpcResponse;
 import com.whut.rpc.core.serializer.BasicSerializer;
-import com.whut.rpc.core.serializer.impl.JdkSerializer;
+import com.whut.rpc.core.serializer.SerializerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
@@ -13,15 +15,16 @@ import java.lang.reflect.Method;
 
 /**
  * the process logic of service proxy
+ *
  * @author whut2024
  * @since 2024-07-23
  */
 public class ServiceProxy implements InvocationHandler {
 
     /**
-     * default serializer
+     * specified serializer
      */
-    private final static BasicSerializer serializer = new JdkSerializer();
+    private final static BasicSerializer serializer = SerializerFactory.getSerializer(RpcApplication.getConfig().getSerializer());
 
 
     @Override
@@ -37,10 +40,11 @@ public class ServiceProxy implements InvocationHandler {
         byte[] rpcRequestByteArray = serializer.serialize(rpcRequest);
 
         try {
-            HttpResponse response = HttpRequest.post("http://localhost:8080").body(rpcRequestByteArray).execute();
+            RpcConfig rpcConfig = RpcApplication.getConfig();
+            HttpResponse response = HttpRequest.post(String.format("http://%s:%s", rpcConfig.getHost(), rpcConfig.getPort())).body(rpcRequestByteArray).execute();
 
             byte[] rpcResponseByteArray = response.bodyBytes();
-            RpcResponse rpcResponse = serializer.deserialize(rpcResponseByteArray);
+            RpcResponse rpcResponse = serializer.deserialize(rpcResponseByteArray, RpcResponse.class);
 
             return rpcResponse.getResponseData();
         } catch (IOException e) {

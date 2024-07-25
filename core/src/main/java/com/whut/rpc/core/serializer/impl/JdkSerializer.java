@@ -7,7 +7,7 @@ import java.io.*;
 /**
  * @author whut2024
  * @since 2024-07-23
- *
+ * <p>
  * a serializer based on JDK API
  */
 public class JdkSerializer implements BasicSerializer {
@@ -23,7 +23,7 @@ public class JdkSerializer implements BasicSerializer {
     }
 
     @Override
-    public <T> T deserialize(byte[] byteArray) throws IOException {
+    public <T> T deserialize(byte[] byteArray, Class<T> classType) throws IOException {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArray);
 
         ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);

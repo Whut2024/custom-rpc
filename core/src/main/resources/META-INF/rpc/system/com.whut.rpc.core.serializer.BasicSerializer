@@ -1,0 +1,3 @@
+JDK=com.whut.rpc.core.serializer.impl.JdkSerializer
+HESSIAN=com.whut.rpc.core.serializer.impl.HessianSerializer
+KRYO=com.whut.rpc.core.serializer.impl.KryoSerializer

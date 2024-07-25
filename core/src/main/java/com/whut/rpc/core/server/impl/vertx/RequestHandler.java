@@ -1,10 +1,11 @@
 package com.whut.rpc.core.server.impl.vertx;
 
+import com.whut.rpc.core.config.RpcApplication;
 import com.whut.rpc.core.model.RpcRequest;
 import com.whut.rpc.core.model.RpcResponse;
 import com.whut.rpc.core.registry.LocalRegistry;
 import com.whut.rpc.core.serializer.BasicSerializer;
-import com.whut.rpc.core.serializer.impl.JdkSerializer;
+import com.whut.rpc.core.serializer.SerializerFactory;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
@@ -23,7 +24,10 @@ import java.lang.reflect.Method;
 public class RequestHandler implements Handler<HttpServerRequest> {
 
 
-    private final static BasicSerializer serializer = new JdkSerializer();
+    /**
+     * specified serializer
+     */
+    private final static BasicSerializer serializer = SerializerFactory.getSerializer(RpcApplication.getConfig().getSerializer());
 
 
     @Override
@@ -37,7 +41,7 @@ public class RequestHandler implements Handler<HttpServerRequest> {
             byte[] byteArray = body.getBytes();
 
             try {
-                rpcRequest = serializer.deserialize(byteArray);
+                rpcRequest = serializer.deserialize(byteArray, RpcRequest.class);
 
                 if (rpcRequest == null) {
                     rpcResponse.setResponseMessage("rpc-request is null");

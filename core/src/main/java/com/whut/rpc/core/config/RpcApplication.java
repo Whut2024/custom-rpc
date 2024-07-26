@@ -1,6 +1,8 @@
 package com.whut.rpc.core.config;
 
 import com.whut.rpc.core.constant.RpcConstant;
+import com.whut.rpc.core.registry.BasicRegistry;
+import com.whut.rpc.core.registry.RegistryFactory;
 import com.whut.rpc.core.util.ConfigUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,7 +43,13 @@ public class RpcApplication implements RpcConstant {
     public static void init(RpcConfig rpcConfig) {
         RpcApplication.rpcConfig = rpcConfig;
 
-        log.info("rpc init, the config is {}", rpcConfig.toString());
+        // init registry center client (build connection)
+        RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
+        String registryClientType = registryConfig.getType();
+        BasicRegistry registry = RegistryFactory.get(registryClientType);
+        registry.init(registryConfig);
+
+        log.info("rpc init, the config is {}", rpcConfig);
     }
 
 

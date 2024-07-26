@@ -1,0 +1,1 @@
+ETCD=com.whut.rpc.core.registry.impl.EtcdRegistry

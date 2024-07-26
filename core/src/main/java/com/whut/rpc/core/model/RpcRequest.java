@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+import static com.whut.rpc.core.constant.RpcConstant.*;
+
 /**
  * @author whut2024
  * @since 2024-07-23
@@ -24,6 +26,9 @@ public class RpcRequest implements Serializable {
 
 
     private String methodName;
+
+
+    private String version = DEFAULT_SERVICE_VERSION;
 
 
     private Class<?>[] argsClassType;

@@ -27,6 +27,9 @@ public class RpcConfig {
     private Integer port = 8080;
 
 
+    private RegistryConfig registryConfig;
+
+
     private Boolean mock = false;
 
 

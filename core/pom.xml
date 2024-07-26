@@ -66,6 +66,13 @@
             <artifactId>hessian</artifactId>
             <version>4.0.66</version>
         </dependency>
+
+        <!--etcd client-->
+        <dependency>
+            <groupId>io.etcd</groupId>
+            <artifactId>jetcd-core</artifactId>
+            <version>0.7.7</version>
+        </dependency>
     </dependencies>
 
 </project>

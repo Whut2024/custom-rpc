@@ -57,7 +57,7 @@ public class EtcdRegistry implements BasicRegistry {
     @Override
     public void register(ServiceMetaInfo serviceMetaInfo) throws Exception {
         // create a lease time
-        long leaseId = client.getLeaseClient().grant(30).get().getID();
+        long leaseId = client.getLeaseClient().grant(3000).get().getID();
 
         // prepare k-v
         String registryKey = ETCD_ROOT_PATH + serviceMetaInfo.getNodeKey();

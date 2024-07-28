@@ -35,7 +35,7 @@ public class ServiceMetaInfo {
      * get the key of a service
      */
     public String getServiceKey() {
-        return String.format("%s:%s%s", name, version, group);
+        return String.format("%s/%s/%s/%s", RpcApplication.getConfig().getName(), name, version, group);
     }
 
 
@@ -43,7 +43,7 @@ public class ServiceMetaInfo {
      * get the key of a service's node
      */
     public String getNodeKey() {
-        return String.format("%s:%s:%s:%s", RpcApplication.getConfig().getName(), getServiceKey(), host, port);
+        return String.format("%s/%s/%s", getServiceKey(), host, port);
     }
 
 

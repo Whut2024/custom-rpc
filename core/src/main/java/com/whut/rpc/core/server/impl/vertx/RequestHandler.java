@@ -47,7 +47,7 @@ public class RequestHandler implements Handler<HttpServerRequest> {
                     rpcResponse.setResponseMessage("rpc-request is null");
                     doResponse(request, rpcResponse);
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 rpcResponse.setException(e);
                 rpcResponse.setResponseMessage(e.getMessage());
                 doResponse(request, rpcResponse);
@@ -91,7 +91,7 @@ public class RequestHandler implements Handler<HttpServerRequest> {
 
         try {
             response.end(Buffer.buffer(serializer.serialize(rpcResponse)));
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             response.end(Buffer.buffer());
         }

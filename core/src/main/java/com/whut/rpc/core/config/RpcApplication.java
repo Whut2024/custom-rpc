@@ -50,6 +50,10 @@ public class RpcApplication implements RpcConstant {
         registry.init(registryConfig);
 
         log.info("rpc init, the config is {}", rpcConfig);
+
+
+        // add (registry client) destroy method to shut-down-hook
+        Runtime.getRuntime().addShutdownHook(new Thread(registry::destroy));
     }
 
 

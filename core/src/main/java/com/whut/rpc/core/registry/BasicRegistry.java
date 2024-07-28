@@ -41,4 +41,16 @@ public interface BasicRegistry {
      * destroy the connection with registry center
      */
     void destroy();
+
+
+    /**
+     * when a key is putted or removed, modify the service cache
+     */
+    void watch(String nodeKey);
+
+
+    /**
+     * start the processor of heart beate test
+     */
+    void refresh();
 }

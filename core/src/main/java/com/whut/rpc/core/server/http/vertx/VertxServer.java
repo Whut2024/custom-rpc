@@ -1,6 +1,6 @@
-package com.whut.rpc.core.server.impl.vertx;
+package com.whut.rpc.core.server.http.vertx;
 
-import com.whut.rpc.core.server.BasicHttpServer;
+import com.whut.rpc.core.server.BasicServer;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
  * a web server depends on vertx
  */
 @Slf4j
-public class VertxHttpServer implements BasicHttpServer {
+public class VertxServer implements BasicServer {
     @Override
     public void start(int port) {
         // initialization

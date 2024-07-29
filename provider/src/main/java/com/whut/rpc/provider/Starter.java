@@ -7,7 +7,8 @@ import com.whut.rpc.core.model.ServiceMetaInfo;
 import com.whut.rpc.core.registry.BasicRegistry;
 import com.whut.rpc.core.registry.LocalRegistry;
 import com.whut.rpc.core.registry.RegistryFactory;
-import com.whut.rpc.core.server.impl.vertx.VertxHttpServer;
+import com.whut.rpc.core.server.http.vertx.VertxServer;
+import com.whut.rpc.core.server.tcp.vertx.VertxTcpServer;
 import com.whut.rpc.provider.service.impl.UserServiceImpl;
 
 import static com.whut.rpc.core.registry.RegistryKeys.*;
@@ -36,7 +37,7 @@ public class Starter {
 
 
         // start web server
-        VertxHttpServer server = new VertxHttpServer();
+        VertxTcpServer server = new VertxTcpServer();
 
         server.start(rpcConfig.getPort());
     }

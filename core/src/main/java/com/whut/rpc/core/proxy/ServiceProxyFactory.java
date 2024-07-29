@@ -1,11 +1,14 @@
 package com.whut.rpc.core.proxy;
 
 import com.whut.rpc.core.config.RpcApplication;
+import com.whut.rpc.core.proxy.template.HttpServiceProxy;
+import com.whut.rpc.core.proxy.template.TcpServiceProxy;
 
 import java.lang.reflect.Proxy;
 
 /**
  * generate service proxy object by factory
+ *
  * @author whut2024
  * @since 2024-07-23
  */
@@ -20,7 +23,10 @@ public class ServiceProxyFactory {
         if (RpcApplication.getConfig().getMock()) return (T) getMockProxy(serviceClass);
 
 
-        return (T) Proxy.newProxyInstance(serviceClass.getClassLoader(), new Class[]{serviceClass}, new ServiceProxy());
+        return (T) Proxy.newProxyInstance(
+                serviceClass.getClassLoader(),
+                new Class[]{serviceClass},
+                new TcpServiceProxy());
     }
 
 
@@ -28,6 +34,9 @@ public class ServiceProxyFactory {
      * get default mock proxy object
      */
     private static Object getMockProxy(Class<?> serviceClass) {
-        return Proxy.newProxyInstance(serviceClass.getClassLoader(), new Class[]{serviceClass}, new MockProxy());
+        return Proxy.newProxyInstance(
+                serviceClass.getClassLoader(),
+                new Class[]{serviceClass},
+                new MockProxy());
     }
 }

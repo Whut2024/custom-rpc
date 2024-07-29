@@ -1,8 +1,6 @@
-package com.whut.rpc.core.proxy;
+package com.whut.rpc.core.proxy.template;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpResponse;
 import com.whut.rpc.core.config.RegistryConfig;
 import com.whut.rpc.core.config.RpcApplication;
 import com.whut.rpc.core.config.RpcConfig;
@@ -11,8 +9,6 @@ import com.whut.rpc.core.model.RpcResponse;
 import com.whut.rpc.core.model.ServiceMetaInfo;
 import com.whut.rpc.core.registry.BasicRegistry;
 import com.whut.rpc.core.registry.RegistryFactory;
-import com.whut.rpc.core.serializer.BasicSerializer;
-import com.whut.rpc.core.serializer.SerializerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
@@ -25,16 +21,10 @@ import java.util.List;
  * @author whut2024
  * @since 2024-07-23
  */
-public class ServiceProxy implements InvocationHandler {
-
-    /**
-     * specified serializer
-     */
-    private final static BasicSerializer serializer = SerializerFactory.getSerializer(RpcApplication.getConfig().getSerializer());
-
+public abstract class ServiceProxyTemplate implements InvocationHandler {
 
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public final Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         String serviceName = method.getDeclaringClass().getName();
 
         RpcRequest rpcRequest = RpcRequest.builder()
@@ -43,8 +33,6 @@ public class ServiceProxy implements InvocationHandler {
                 .argsClassType(method.getParameterTypes())
                 .args(args)
                 .build();
-
-        byte[] rpcRequestByteArray = serializer.serialize(rpcRequest);
 
         try {
             RpcConfig rpcConfig = RpcApplication.getConfig();
@@ -63,14 +51,7 @@ public class ServiceProxy implements InvocationHandler {
             // todo we just use the first service this time
             ServiceMetaInfo serviceMetaInfo = serviceMetaInfoList.get(0);
 
-            // send the post and get the response
-            HttpResponse response = HttpRequest.post(serviceMetaInfo.getFullServiceAddress()).body(rpcRequestByteArray).execute();
-
-            // resolve response
-            byte[] rpcResponseByteArray = response.bodyBytes();
-            RpcResponse rpcResponse = serializer.deserialize(rpcResponseByteArray, RpcResponse.class);
-
-            return rpcResponse.getResponseData();
+            return getResponse(serviceMetaInfo, rpcRequest).getResponseData();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -78,4 +59,7 @@ public class ServiceProxy implements InvocationHandler {
 
         return null;
     }
+
+
+    public abstract RpcResponse getResponse(ServiceMetaInfo serviceMetaInfo, RpcRequest rpcRequest) throws IOException;
 }

@@ -14,16 +14,19 @@ public class Starter {
         UserService userService = ServiceProxyFactory.getProxy(UserService.class);
 
         User user = new User();
-        user.setUsername("lq");
+        user.setUsername("lqqweddddddddddddddddddddddddddddddddddddddddddddddddd");
 
-        User remoteUser = userService.name(user);
+        for (int i = 0; i < 100; i++) {
 
+            User remoteUser  = userService.name(user);
 
-        if (remoteUser == null) {
-            System.out.println("remote user is null");
-            return;
+            if (remoteUser == null) {
+                System.out.println("remote user is null");
+                return;
+            }
+
+            System.out.println(user);
+
         }
-
-        System.out.println(user);
     }
 }

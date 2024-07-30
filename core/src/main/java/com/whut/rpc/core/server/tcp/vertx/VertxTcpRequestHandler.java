@@ -30,52 +30,54 @@ public class VertxTcpRequestHandler implements Handler<NetSocket> {
     @Override
     public void handle(NetSocket socket) {
 
-        socket.handler(buffer -> {
-            ProtocolMessage<?> protocolMessage = coder.decoder(buffer);
+        socket.handler(new TcpBufferHandlerWrapper(
+                buffer -> {
+                    ProtocolMessage<?> protocolMessage = coder.decoder(buffer);
 
-            RpcResponse rpcResponse = new RpcResponse();
+                    RpcResponse rpcResponse = new RpcResponse();
 
-            try {
-                // prepare rpc-request object
-                RpcRequest rpcRequest = (RpcRequest) protocolMessage.getBody();
+                    try {
+                        // prepare rpc-request object
+                        RpcRequest rpcRequest = (RpcRequest) protocolMessage.getBody();
 
-                // invoke specified method
-                String serviceName = rpcRequest.getServiceName();
-                String methodName = rpcRequest.getMethodName();
-                Class<?>[] argsClassType = rpcRequest.getArgsClassType();
-                Object[] args = rpcRequest.getArgs();
+                        // invoke specified method
+                        String serviceName = rpcRequest.getServiceName();
+                        String methodName = rpcRequest.getMethodName();
+                        Class<?>[] argsClassType = rpcRequest.getArgsClassType();
+                        Object[] args = rpcRequest.getArgs();
 
-                Class<?> service = LocalRegistry.getService(serviceName);
-                Method method = service.getMethod(methodName, argsClassType);
-                // todo    instantiate class by constructor
-                Object result = method.invoke(service.getConstructor().newInstance(), args);
+                        Class<?> service = LocalRegistry.getService(serviceName);
+                        Method method = service.getMethod(methodName, argsClassType);
+                        // todo    instantiate class by constructor
+                        Object result = method.invoke(service.getConstructor().newInstance(), args);
 
-                // inject message
-                rpcResponse.setResponseData(result);
-                rpcResponse.setResponseDataClassType(result.getClass());
-            } catch (Exception e) {
-                // note error message
-                rpcResponse.setException(e);
-                rpcResponse.setResponseMessage(e.getMessage());
+                        // inject message
+                        rpcResponse.setResponseData(result);
+                        rpcResponse.setResponseDataClassType(result.getClass());
+                    } catch (Exception e) {
+                        // note error message
+                        rpcResponse.setException(e);
+                        rpcResponse.setResponseMessage(e.getMessage());
 
-                log.warn("handler failed, cause is {}", e.getMessage());
-            }
+                        log.warn("handler failed, cause is {}", e.getMessage());
+                    }
 
-            // response
-            ProtocolMessage.Header header = protocolMessage.getHeader();
-            header.setType((byte) ProtocolMessageTypeEnum.RESPONSE.getKey());
-            ProtocolMessage<RpcResponse> rpcResponseProtocolMessage = new ProtocolMessage<>(rpcResponse, header);
+                    // response
+                    ProtocolMessage.Header header = protocolMessage.getHeader();
+                    header.setType((byte) ProtocolMessageTypeEnum.RESPONSE.getKey());
+                    ProtocolMessage<RpcResponse> rpcResponseProtocolMessage = new ProtocolMessage<>(rpcResponse, header);
 
-            Buffer responseBuffer;
-            try {
-                responseBuffer = coder.encoder(rpcResponseProtocolMessage);
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException("encoding failed");
-            }
+                    Buffer responseBuffer;
+                    try {
+                        responseBuffer = coder.encoder(rpcResponseProtocolMessage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new RuntimeException("encoding failed");
+                    }
 
-            socket.write(responseBuffer);
-        });
+                    socket.write(responseBuffer);
+                }
+        ));
 
 
     }

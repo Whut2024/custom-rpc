@@ -1,5 +1,6 @@
 package com.whut.rpc.core.server.tcp.vertx;
 
+import com.whut.rpc.core.config.RpcApplication;
 import com.whut.rpc.core.model.RpcRequest;
 import com.whut.rpc.core.model.RpcResponse;
 import com.whut.rpc.core.protocol.ProtocolMessage;
@@ -32,6 +33,7 @@ public class VertxTcpRequestHandler implements Handler<NetSocket> {
 
         socket.handler(new TcpBufferHandlerWrapper(
                 buffer -> {
+                    log.warn("port {} receive message", RpcApplication.getConfig().getPort());
                     ProtocolMessage<?> protocolMessage = coder.decoder(buffer);
 
                     RpcResponse rpcResponse = new RpcResponse();

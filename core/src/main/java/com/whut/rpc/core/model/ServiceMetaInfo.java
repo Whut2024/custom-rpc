@@ -50,8 +50,8 @@ public class ServiceMetaInfo {
      * transform node-key to service-key
      */
     public static String getServiceKey(String nodeKey) {
-        String[] strings = nodeKey.split("/");
-        StringBuilder builder = new StringBuilder();
+        final String[] strings = nodeKey.split("/");
+        final StringBuilder builder = new StringBuilder();
         for (int i = 2; i < 6; i++) {
             builder.append(strings[i]);
             if (i != 5) builder.append("/");

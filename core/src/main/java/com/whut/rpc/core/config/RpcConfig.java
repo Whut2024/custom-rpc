@@ -1,7 +1,9 @@
 package com.whut.rpc.core.config;
 
+import com.whut.rpc.core.loadbalancer.LoadBalanceKeys;
 import lombok.Data;
 
+import static com.whut.rpc.core.loadbalancer.LoadBalanceKeys.*;
 import static com.whut.rpc.core.serializer.SerializerKeys.*;
 
 /**
@@ -34,4 +36,7 @@ public class RpcConfig {
 
 
     private String serializer = JDK;
+
+
+    private String loadBalancer = ROUND_ROBIN;
 }

@@ -44,7 +44,7 @@ public class VertxTcpClient {
         RpcConfig rpcConfig = RpcApplication.getConfig();
 
         CompletableFuture<RpcResponse> responseFuture = new CompletableFuture<>();
-        client.connect(rpcConfig.getPort(), rpcConfig.getHost(), connect -> {
+        client.connect(serviceMetaInfo.getPort(), serviceMetaInfo.getHost(), connect -> {
             // get socket
             if (connect.succeeded()) {
                 NetSocket socket = connect.result();

@@ -1,3 +1,4 @@
 CONSISTENT_HASH=com.whut.rpc.core.loadbalancer.impl.ConsistentHashLoadBalancer
 RANDOM=com.whut.rpc.core.loadbalancer.impl.RandomLoadBalancer
 ROUND_ROBIN=com.whut.rpc.core.loadbalancer.impl.RoundRobinLoadBalancer
+LEAST_USAGE=com.whut.rpc.core.loadbalancer.impl.LeastUsageLoadBalancer

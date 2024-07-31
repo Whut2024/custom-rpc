@@ -53,4 +53,17 @@ public interface BasicRegistry {
      * start the processor of heart beate test
      */
     void refresh();
+
+
+    /**
+     * increase a service's usage
+     */
+    void increaseUsage(ServiceMetaInfo serviceMetaInfo);
+
+
+    /**
+     * decrease a service's usage
+     */
+    void decreaseUsage(ServiceMetaInfo serviceMetaInfo);
+
 }

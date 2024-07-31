@@ -33,6 +33,7 @@ public class Starter {
         serviceMetaInfo.setName(UserService.class.getName());
         serviceMetaInfo.setHost(rpcConfig.getHost());
         serviceMetaInfo.setPort(rpcConfig.getPort());
+        serviceMetaInfo.setUsedNumber(0);
         registry.register(serviceMetaInfo);
 
 

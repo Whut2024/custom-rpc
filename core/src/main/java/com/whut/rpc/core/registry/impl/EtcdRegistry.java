@@ -85,16 +85,11 @@ public class EtcdRegistry implements BasicRegistry {
 
     @Override
     public void register(ServiceMetaInfo serviceMetaInfo) throws Exception {
+        // store the service
+        store(serviceMetaInfo, 30);
 
-        // prepare k-v
+        // store the key
         String registryKey = ETCD_ROOT_PATH + serviceMetaInfo.getNodeKey();
-        ByteSequence key = ByteSequence.from(registryKey, StandardCharsets.UTF_8);
-        ByteSequence value = ByteSequence.from(JSONUtil.toJsonStr(serviceMetaInfo), StandardCharsets.UTF_8);
-
-        // put it to registry center
-        kvClient.put(key, value, getLeaseTime(30)).get();
-
-        // storage the key
         NODE_KEY_SET.add(registryKey);
 
 
@@ -240,6 +235,20 @@ public class EtcdRegistry implements BasicRegistry {
         CronUtil.start();
     }
 
+    @Override
+    public void increaseUsage(ServiceMetaInfo serviceMetaInfo) {
+        // increase usage number
+        serviceMetaInfo.setUsedNumber(serviceMetaInfo.getUsedNumber() + 1);
+        store(serviceMetaInfo, 30);
+    }
+
+    @Override
+    public void decreaseUsage(ServiceMetaInfo serviceMetaInfo) {
+        // increase usage number
+        serviceMetaInfo.setUsedNumber(serviceMetaInfo.getUsedNumber() - 1);
+        store(serviceMetaInfo, 30);
+    }
+
 
     /**
      * @param timeout (seconds)
@@ -264,5 +273,24 @@ public class EtcdRegistry implements BasicRegistry {
         }
 
         return nodeKey.substring(0, i + 2) + "tool";
+    }
+
+
+    /**
+     * store a service and set its lease time
+     * @param timeout seconds
+     */
+    private void store(ServiceMetaInfo serviceMetaInfo, long timeout) {
+        // prepare k-v
+        String registryKey = ETCD_ROOT_PATH + serviceMetaInfo.getNodeKey();
+        ByteSequence key = ByteSequence.from(registryKey, StandardCharsets.UTF_8);
+        ByteSequence value = ByteSequence.from(JSONUtil.toJsonStr(serviceMetaInfo), StandardCharsets.UTF_8);
+
+        // put it to registry center
+        try {
+            kvClient.put(key, value, getLeaseTime(timeout)).get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

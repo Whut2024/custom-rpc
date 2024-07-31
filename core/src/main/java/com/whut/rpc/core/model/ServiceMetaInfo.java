@@ -4,6 +4,8 @@ import cn.hutool.core.util.StrUtil;
 import com.whut.rpc.core.config.RpcApplication;
 import lombok.Data;
 
+import java.util.Comparator;
+
 import static com.whut.rpc.core.constant.RpcConstant.*;
 
 /**
@@ -13,7 +15,7 @@ import static com.whut.rpc.core.constant.RpcConstant.*;
  * @since 2024-07-26
  */
 @Data
-public class ServiceMetaInfo {
+public class ServiceMetaInfo implements Comparable<ServiceMetaInfo> {
 
 
     private String name;
@@ -29,6 +31,9 @@ public class ServiceMetaInfo {
 
 
     private String group = "default";
+
+
+    private Integer usedNumber;
 
 
     /**
@@ -70,5 +75,10 @@ public class ServiceMetaInfo {
         }
 
         return String.format("%s:%s", host, port);
+    }
+
+    @Override
+    public int compareTo(ServiceMetaInfo o) {
+        return this.usedNumber - o.usedNumber;
     }
 }

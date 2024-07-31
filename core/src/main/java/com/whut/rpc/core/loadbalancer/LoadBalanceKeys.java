@@ -16,4 +16,7 @@ public interface LoadBalanceKeys {
 
     String ROUND_ROBIN = "ROUND_ROBIN";
 
+
+    String LEAST_USAGE = "LEAST_USAGE";
+
 }

@@ -6,6 +6,7 @@ import com.whut.rpc.core.config.RpcApplication;
 import com.whut.rpc.core.config.RpcConfig;
 import com.whut.rpc.core.loadbalancer.LoadBalancer;
 import com.whut.rpc.core.loadbalancer.LoadBalancerFactory;
+import com.whut.rpc.core.loadbalancer.impl.LeastUsageLoadBalancer;
 import com.whut.rpc.core.model.RpcRequest;
 import com.whut.rpc.core.model.RpcResponse;
 import com.whut.rpc.core.model.ServiceMetaInfo;
@@ -28,14 +29,11 @@ import java.util.Map;
 public abstract class ServiceProxyTemplate implements InvocationHandler {
 
 
-
-
-
     @Override
     public final Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        RpcConfig rpcConfig = RpcApplication.getConfig();
+        final RpcConfig rpcConfig = RpcApplication.getConfig();
 
-        String serviceName = method.getDeclaringClass().getName();
+        final String serviceName = method.getDeclaringClass().getName();
 
         final String methodName = method.getName();
         final RpcRequest rpcRequest = RpcRequest.builder()
@@ -45,6 +43,8 @@ public abstract class ServiceProxyTemplate implements InvocationHandler {
                 .args(args)
                 .build();
 
+        LoadBalancer loadBalancer = null;
+        ServiceMetaInfo serviceMetaInfo = null;
         try {
             // discovery remote matched service list
             final ServiceMetaInfo tempInfo = new ServiceMetaInfo();
@@ -60,10 +60,14 @@ public abstract class ServiceProxyTemplate implements InvocationHandler {
             // load balance
             final Map<String, Object> requestParamMap = new HashMap<>();
             requestParamMap.put("methodName", methodName);
-            LoadBalancer loadBalancer = LoadBalancerFactory.get(rpcConfig.getLoadBalancer());
-            ServiceMetaInfo serviceMetaInfo = loadBalancer.select(requestParamMap, serviceMetaInfoList);
+            loadBalancer = LoadBalancerFactory.get(rpcConfig.getLoadBalancer());
+            serviceMetaInfo = loadBalancer.select(requestParamMap, serviceMetaInfoList);
 
-            return getResponse(serviceMetaInfo, rpcRequest).getResponseData();
+            try {
+                return getResponse(serviceMetaInfo, rpcRequest).getResponseData();
+            } finally {
+                if (loadBalancer instanceof LeastUsageLoadBalancer) ((LeastUsageLoadBalancer) loadBalancer).over(serviceMetaInfo);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

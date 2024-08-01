@@ -4,6 +4,8 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.whut.rpc.core.config.RegistryConfig;
 import com.whut.rpc.core.config.RpcApplication;
 import com.whut.rpc.core.config.RpcConfig;
+import com.whut.rpc.core.fault.retry.RetryStrategy;
+import com.whut.rpc.core.fault.retry.RetryStrategyFactory;
 import com.whut.rpc.core.loadbalancer.LoadBalancer;
 import com.whut.rpc.core.loadbalancer.LoadBalancerFactory;
 import com.whut.rpc.core.loadbalancer.impl.LeastUsageLoadBalancer;
@@ -63,8 +65,13 @@ public abstract class ServiceProxyTemplate implements InvocationHandler {
             loadBalancer = LoadBalancerFactory.get(rpcConfig.getLoadBalancer());
             serviceMetaInfo = loadBalancer.select(requestParamMap, serviceMetaInfoList);
 
+            // get retry strategy
+            final RetryStrategy retryStrategy = RetryStrategyFactory.get(rpcConfig.getRetryStrategy());
+
             try {
-                return getResponse(serviceMetaInfo, rpcRequest).getResponseData();
+                final ServiceMetaInfo finalServiceMetaInfo = serviceMetaInfo;
+                final RpcResponse rpcResponse = retryStrategy.doRetry(() -> getResponse(finalServiceMetaInfo, rpcRequest));
+                return rpcResponse.getResponseData();
             } finally {
                 if (loadBalancer instanceof LeastUsageLoadBalancer) ((LeastUsageLoadBalancer) loadBalancer).over(serviceMetaInfo);
             }

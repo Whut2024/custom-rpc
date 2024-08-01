@@ -1,0 +1,2 @@
+NO=com.whut.rpc.core.fault.retry.impl.NoRetryStrategy
+FIXED_INTERVAL=com.whut.rpc.core.fault.retry.impl.FixedIntervalRetryStrategy

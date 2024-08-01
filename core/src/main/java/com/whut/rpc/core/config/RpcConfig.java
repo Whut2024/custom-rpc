@@ -1,10 +1,9 @@
 package com.whut.rpc.core.config;
 
+import com.whut.rpc.core.fault.retry.RetryStrategyKeys;
 import com.whut.rpc.core.loadbalancer.LoadBalanceKeys;
+import com.whut.rpc.core.serializer.SerializerKeys;
 import lombok.Data;
-
-import static com.whut.rpc.core.loadbalancer.LoadBalanceKeys.*;
-import static com.whut.rpc.core.serializer.SerializerKeys.*;
 
 /**
  * the config of rpc framework
@@ -35,8 +34,11 @@ public class RpcConfig {
     private Boolean mock = false;
 
 
-    private String serializer = JDK;
+    private String serializer = SerializerKeys.JDK;
 
 
-    private String loadBalancer = ROUND_ROBIN;
+    private String loadBalancer = LoadBalanceKeys.ROUND_ROBIN;
+
+
+    private String retryStrategy = RetryStrategyKeys.FIXED_INTERVAL;
 }

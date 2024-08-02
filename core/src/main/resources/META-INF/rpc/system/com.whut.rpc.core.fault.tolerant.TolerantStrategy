@@ -1,0 +1,4 @@
+FAIL_BACK=com.whut.rpc.core.fault.tolerant.impl.FailBackTolerantStrategy
+FAIL_FAST=com.whut.rpc.core.fault.tolerant.impl.FailFastTolerantStrategy
+FAIL_OVER=com.whut.rpc.core.fault.tolerant.impl.FailOverTolerantStrategy
+FAIL_SAFE=com.whut.rpc.core.fault.tolerant.impl.FailSafeTolerantStrategy

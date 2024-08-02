@@ -6,6 +6,9 @@ import com.whut.rpc.core.config.RpcApplication;
 import com.whut.rpc.core.config.RpcConfig;
 import com.whut.rpc.core.fault.retry.RetryStrategy;
 import com.whut.rpc.core.fault.retry.RetryStrategyFactory;
+import com.whut.rpc.core.fault.tolerant.TolerantStrategy;
+import com.whut.rpc.core.fault.tolerant.TolerantStrategyFactory;
+import com.whut.rpc.core.fault.tolerant.TolerantStrategyKeys;
 import com.whut.rpc.core.loadbalancer.LoadBalancer;
 import com.whut.rpc.core.loadbalancer.LoadBalancerFactory;
 import com.whut.rpc.core.loadbalancer.impl.LeastUsageLoadBalancer;
@@ -45,8 +48,8 @@ public abstract class ServiceProxyTemplate implements InvocationHandler {
                 .args(args)
                 .build();
 
-        LoadBalancer loadBalancer = null;
-        ServiceMetaInfo serviceMetaInfo = null;
+        LoadBalancer loadBalancer;
+        ServiceMetaInfo serviceMetaInfo;
         try {
             // discovery remote matched service list
             final ServiceMetaInfo tempInfo = new ServiceMetaInfo();
@@ -70,7 +73,19 @@ public abstract class ServiceProxyTemplate implements InvocationHandler {
 
             try {
                 final ServiceMetaInfo finalServiceMetaInfo = serviceMetaInfo;
-                final RpcResponse rpcResponse = retryStrategy.doRetry(() -> getResponse(finalServiceMetaInfo, rpcRequest));
+                RpcResponse rpcResponse = null;
+                try {
+                    // retry strategy
+                    rpcResponse = retryStrategy.doRetry(() -> getResponse(finalServiceMetaInfo, rpcRequest));
+                } catch (Exception e) {
+                    requestParamMap.put(TolerantStrategyKeys.SERVICE_META_INFO, finalServiceMetaInfo);
+                    requestParamMap.put(TolerantStrategyKeys.RPC_REQUEST, rpcRequest);
+
+                    // tolerant strategy
+                    TolerantStrategy tolerantStrategy = TolerantStrategyFactory.get(rpcConfig.getTolerantStrategy());
+                    tolerantStrategy.doTolerant(requestParamMap, e);
+                }
+                assert rpcResponse != null;
                 return rpcResponse.getResponseData();
             } finally {
                 if (loadBalancer instanceof LeastUsageLoadBalancer) ((LeastUsageLoadBalancer) loadBalancer).over(serviceMetaInfo);

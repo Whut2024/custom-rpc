@@ -77,6 +77,9 @@ public class ServiceMetaInfo implements Comparable<ServiceMetaInfo> {
         return String.format("%s:%s", host, port);
     }
 
+
+
+
     @Override
     public int compareTo(ServiceMetaInfo o) {
         return this.usedNumber - o.usedNumber;

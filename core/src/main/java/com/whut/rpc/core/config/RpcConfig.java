@@ -1,6 +1,7 @@
 package com.whut.rpc.core.config;
 
 import com.whut.rpc.core.fault.retry.RetryStrategyKeys;
+import com.whut.rpc.core.fault.tolerant.TolerantStrategyKeys;
 import com.whut.rpc.core.loadbalancer.LoadBalanceKeys;
 import com.whut.rpc.core.serializer.SerializerKeys;
 import lombok.Data;
@@ -41,4 +42,7 @@ public class RpcConfig {
 
 
     private String retryStrategy = RetryStrategyKeys.FIXED_INTERVAL;
+
+
+    private String tolerantStrategy = TolerantStrategyKeys.FAIL_OVER;
 }

@@ -38,19 +38,24 @@ public class RpcApplication implements RpcConstant {
 
 
     /**
-     * support inject config by yourself
+     * support inject config by yourself, it is used for provider's starting
      */
     public static void init(RpcConfig rpcConfig) {
         RpcApplication.rpcConfig = rpcConfig;
 
         // init registry center client (build connection)
-        RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
-        String registryClientType = registryConfig.getType();
-        BasicRegistry registry = RegistryFactory.get(registryClientType);
+        final RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
+        final String registryClientType = registryConfig.getType();
+        final BasicRegistry registry = RegistryFactory.get(registryClientType);
         registry.init(registryConfig);
 
         log.info("rpc init, the config is {}", rpcConfig);
 
+
+        if (rpcConfig.getSingleConsumer()) return;
+
+        // start heart beat
+        registry.refresh();
 
         // add (registry client) destroy method to shut-down-hook
         Runtime.getRuntime().addShutdownHook(new Thread(registry::destroy));

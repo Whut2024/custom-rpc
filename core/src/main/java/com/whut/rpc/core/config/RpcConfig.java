@@ -35,6 +35,9 @@ public class RpcConfig {
     private Boolean mock = false;
 
 
+    private Boolean singleConsumer = false;
+
+
     private String serializer = SerializerKeys.JDK;
 
 

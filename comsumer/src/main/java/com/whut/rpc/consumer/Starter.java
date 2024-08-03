@@ -2,6 +2,7 @@ package com.whut.rpc.consumer;
 
 import com.whut.rpc.common.entity.User;
 import com.whut.rpc.common.servcie.UserService;
+import com.whut.rpc.core.bootstrap.ConsumerBootstrap;
 import com.whut.rpc.core.proxy.ServiceProxyFactory;
 
 /**
@@ -10,7 +11,8 @@ import com.whut.rpc.core.proxy.ServiceProxyFactory;
 public class Starter {
 
     public static void main(String[] args) {
-        // todo   use easy module to create a proxy service object which can invoke methods remotely
+        ConsumerBootstrap.init();
+
         UserService userService = ServiceProxyFactory.getProxy(UserService.class);
 
         User user = new User();

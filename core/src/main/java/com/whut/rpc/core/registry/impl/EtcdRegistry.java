@@ -78,9 +78,6 @@ public class EtcdRegistry implements BasicRegistry {
         client = builder.build();
 
         kvClient = client.getKVClient();
-
-        // start heart beat
-        refresh();
     }
 
     @Override

@@ -33,7 +33,7 @@ public class ServiceMetaInfo implements Comparable<ServiceMetaInfo> {
     private String group = "default";
 
 
-    private Integer usedNumber;
+    private Integer usedNumber = 0;
 
 
     /**

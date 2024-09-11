@@ -1,6 +1,6 @@
 package com.whut.rpc.core.loadbalancer;
 
-import com.whut.rpc.core.serializer.SpiLoader;
+import com.whut.rpc.core.util.SpiLoader;
 
 import static com.whut.rpc.core.loadbalancer.LoadBalanceKeys.*;
 

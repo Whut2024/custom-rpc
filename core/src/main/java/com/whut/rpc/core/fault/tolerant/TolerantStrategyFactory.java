@@ -1,6 +1,6 @@
 package com.whut.rpc.core.fault.tolerant;
 
-import com.whut.rpc.core.serializer.SpiLoader;
+import com.whut.rpc.core.util.SpiLoader;
 
 import static com.whut.rpc.core.fault.tolerant.TolerantStrategyKeys.*;
 
